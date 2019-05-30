@@ -1,0 +1,4 @@
+node_modules
+package-lock*
+.DS_Store
+.Volumes-100

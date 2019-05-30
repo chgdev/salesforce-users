@@ -1,0 +1,27 @@
+{
+  "name": "salesforce-users",
+  "version": "1.0.0",
+  "description": "Utility module for interacting with salesforce users",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "docs": "documentation build index.js -f md -o DOCUMENTATION.md"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "form-data": "^2.3.3",
+    "lodash": "^4.17.11"
+  },
+  "devDependencies": {
+    "documentation": "^11.0.0",
+    "eslint": "^5.16.0",
+    "husky": "^2.3.0",
+    "jest": "^24.8.0",
+    "jest-chain": "^1.1.2",
+    "jest-extended": "^0.11.1",
+    "lint-staged": "^8.1.7"
+  }
+}
