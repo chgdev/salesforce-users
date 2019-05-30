@@ -18,7 +18,7 @@ module.exports = {
   client_id: '',
   client_secret: '',
   environment: '',
-  async authorize(username="",password="") {
+  async authorize(username,password) {
     const getFromUrl = url => `${url.split('.')[0].substring(8)}.${url.split('.')[1]}`;
     const body = FormEncoder({
       client_id: this.client_id,
@@ -48,7 +48,7 @@ module.exports = {
    * @param  {String} username [description]
    * @return {[type]}          [description]
    */
-  async getUser(username="") {
+  async getUser(username) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
       headers: {
         "Authorization": `Bearer ${this.token}`
@@ -71,7 +71,7 @@ module.exports = {
    * @param {String} username [description]
    * @param {Object} props    [description]
    */
-  async setUser(username="", props={}) {
+  async setUser(username, props) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
       headers: {
         "Authorization": `Bearer ${this.token}`
@@ -96,7 +96,7 @@ module.exports = {
    * @param  {String} email [description]
    * @return {[type]}       [description]
    */
-  async getContact(email="") {
+  async getContact(email) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
       headers: {
         "Authorization": `Bearer ${this.token}`
@@ -119,7 +119,7 @@ module.exports = {
    * [setContact description]
    * @param {Object} props [description]
    */
-  async setContact(email="", props={}) {
+  async setContact(email, props) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
       headers: {
         "Authorization": `Bearer ${this.token}`
@@ -145,7 +145,7 @@ module.exports = {
    * @param  {String} username [description]
    * @return {[type]}          [description]
    */
-  async deactivateUser(username="") {
+  async deactivateUser(username) {
     await this.setUser(username, { isActive: false });
   }
 };
