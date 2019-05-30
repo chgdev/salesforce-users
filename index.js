@@ -44,9 +44,9 @@ module.exports = {
     this.instance = getFromUrl(instance_url);
   },
   /**
-   * [getUsers description]
-   * @param  {String} username [description]
-   * @return {[type]}          [description]
+   * Function to retrieve a user record from salesforce
+   * @param  {String} username Username for the user to be retrieved
+   * @return {Promise<Object>} Returns an Object containing all the properties and values for the salesforce user record
    */
   async getUser(username) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
@@ -68,8 +68,8 @@ module.exports = {
   },
   /**
    * Updates information on the user record
-   * @param {String} username [description]
-   * @param {Object} props    [description]
+   * @param {String} username Username on the record to be updated
+   * @param {Object} props    Updates to be applied to the record
    */
   async setUser(username, props) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
@@ -92,9 +92,9 @@ module.exports = {
     );
   },
   /**
-   * [getContact description]
-   * @param  {String} email [description]
-   * @return {[type]}       [description]
+   * Retrieves a contact record from salesforce
+   * @param  {String} email Email found on the contact record
+   * @return {Promise<Object>} Object containing the record for the contact in salesforce
    */
   async getContact(email) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
@@ -116,8 +116,9 @@ module.exports = {
     return data;
   },
   /**
-   * [setContact description]
-   * @param {Object} props [description]
+   * Function to update the contact record
+   * @param {String} email email on the contact record to be updated
+   * @param {Object} props updates to be made to the contact record
    */
   async setContact(email, props) {
     const { data: {records: [{ Id }]} } = await axios.get(`${this.instance}/services/data/v42.0/query/`, {
@@ -141,9 +142,9 @@ module.exports = {
     return data;
   },
   /**
-   * [deactivateUser description]
-   * @param  {String} username [description]
-   * @return {[type]}          [description]
+   * Function to deactivate a user in salesforce
+   * @param  {String} username username of the user to be deactivated
+   * @return {Promise} Promise resolves when the user deactivation completes
    */
   async deactivateUser(username) {
     await this.setUser(username, { isActive: false });
