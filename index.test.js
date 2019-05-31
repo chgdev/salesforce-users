@@ -1,14 +1,14 @@
 jest.mock("axios", () => ({
-  get: jest.fn().mockImplementation(() => ({ data: 'foo' })),
-  post: jest.fn().mockImplementation(() => ({ data: 'foo' })),
+  get: jest.fn().mockImplementation(() => ({ data: "foo" })),
+  post: jest.fn().mockImplementation(() => ({ data: "foo" })),
   patch: jest.fn()
 }));
-const axios = require('axios');
-const SF = require('.')('stub-client-id', 'stub-client-secret', 'dev');
+const axios = require("axios");
+const SF = require(".")("stub-client-id", "stub-client-secret", "dev");
 
 describe("Main tests", () => {
   beforeAll(() => {
-    SF.token = 'stub-token';
+    SF.token = "stub-token";
   });
   afterEach(() => {
     axios.get.mockReset();
@@ -36,13 +36,13 @@ describe("Main tests", () => {
   describe("authorize", () => {
     test("rejects when data can't be extracted", () => {
       expect(() => SF.authorize()).toReject();
-    })
+    });
     test("calls axios post when in dev", async () => {
       axios.post.mockImplementation(() => ({ data: {
-        access_token: 'Play some pinball!',
-        instance_url: 'https://foobar.cs12.my.salesforce.com'
+        access_token: "Play some pinball!",
+        instance_url: "https://foobar.cs12.my.salesforce.com"
       }}));
-      await SF.authorize('fake', 'user');
+      await SF.authorize("fake", "user");
       expect(axios.post).toBeCalled();
       expect(axios.post).toBeCalledWith(
         "https://test.salesforce.com/services/oauth2/token",
@@ -51,11 +51,11 @@ describe("Main tests", () => {
     });
     test("calls axios post when in prod", async () => {
       axios.post.mockImplementation(() => ({ data: {
-        access_token: 'Play some pinball!',
-        instance_url: 'https://foobar.cs12.my.salesforce.com'
+        access_token: "Play some pinball!",
+        instance_url: "https://foobar.cs12.my.salesforce.com"
       }}));
-      SF.environment = 'prod';
-      await SF.authorize('fake', 'user');
+      SF.environment = "prod";
+      await SF.authorize("fake", "user");
       expect(axios.post).toBeCalled();
       expect(axios.post).toBeCalledWith(
         "https://login.salesforce.com/services/oauth2/token",
@@ -68,7 +68,7 @@ describe("Main tests", () => {
       axios.get.mockImplementation(() => ({
         data: {
           records: [
-            { Id: 'fakeId' }
+            { Id: "fakeId" }
           ]
         }
       }));
@@ -89,7 +89,7 @@ describe("Main tests", () => {
       axios.get.mockImplementation(() => ({
         data: {
           records: [
-            { Id: 'fakeId' }
+            { Id: "fakeId" }
           ]
         }
       }));
@@ -110,7 +110,7 @@ describe("Main tests", () => {
       axios.get.mockImplementation(() => ({
         data: {
           records: [
-            { Id: 'fakeId' }
+            { Id: "fakeId" }
           ]
         }
       }));
@@ -136,12 +136,12 @@ describe("Main tests", () => {
       axios.get.mockImplementation(() => ({
         data: {
           records: [
-            { Id: 'fakeId' }
+            { Id: "fakeId" }
           ]
         }
       }));
       axios.patch.mockImplementation(() => ({
-        data: 'fake-data'
+        data: "fake-data"
       }));
       await SF.setContact("foobar@foo.bar", { Email: "foobar@fizz.buz" });
       expect(axios.get.mock.calls.length).toBe(1);

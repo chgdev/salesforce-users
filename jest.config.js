@@ -9,4 +9,4 @@ module.exports = {
     }
   },
   setupFilesAfterEnv: ["jest-extended", "jest-chain"],
-}
+};

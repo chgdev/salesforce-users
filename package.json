@@ -6,6 +6,8 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "docs": "documentation build index.js -f md -o DOCUMENTATION.md"
   },
   "keywords": [

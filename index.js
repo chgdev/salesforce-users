@@ -1,6 +1,6 @@
 const axios = require("axios");
 // helper function for form encoding a request
-const FormEncoder = (obj) => Object.keys(obj).reduce(
+const FormEncoder = obj => Object.keys(obj).reduce(
   (acc, curr) => acc === "" ?
     `${curr}=${encodeURIComponent(obj[curr])}`
     : `${acc}&${curr}=${obj[curr]}`,
@@ -140,7 +140,7 @@ module.exports = (client_id, client_secret, environment) => ({
     return await Promise.all(
       records
         .map(idReducer)
-        .map((id) => this.getSalesforceObject("contact", id).then(dataReducer))
+        .map(id => this.getSalesforceObject("contact", id).then(dataReducer))
     );
   },
   /**
