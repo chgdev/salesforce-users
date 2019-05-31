@@ -2,16 +2,75 @@
 
 ### Table of Contents
 
--   [getUser][1]
+-   [salesforceQuery][1]
     -   [Parameters][2]
--   [setUser][3]
+-   [getSalesforceObject][3]
     -   [Parameters][4]
--   [getContact][5]
+-   [updateSalesforceObject][5]
     -   [Parameters][6]
--   [setContact][7]
+-   [authorize][7]
     -   [Parameters][8]
--   [deactivateUser][9]
+-   [getUser][9]
     -   [Parameters][10]
+-   [setUser][11]
+    -   [Parameters][12]
+-   [getContact][13]
+    -   [Parameters][14]
+-   [getContacts][15]
+    -   [Parameters][16]
+-   [setContact][17]
+    -   [Parameters][18]
+-   [deactivateUser][19]
+    -   [Parameters][20]
+-   [deactivatePortalUser][21]
+    -   [Parameters][22]
+
+## salesforceQuery
+
+Performs a salesforce query
+
+### Parameters
+
+-   `query` **[String][23]** Query to be executed against salesforce
+
+Returns **[Promise][24]&lt;[Request][25]>** Resolves to an axios request object
+
+## getSalesforceObject
+
+Performs a salesforce query
+
+### Parameters
+
+-   `type` **[String][23]** Type of object to be retrieved from salesforce
+-   `id` **[String][23]** Id of the object to be retrieved from salesforce
+
+Returns **[Promise][24]&lt;[Request][25]>** Resolves to an axios request object
+
+## updateSalesforceObject
+
+Performs an update on a salesforce object
+
+### Parameters
+
+-   `type` **[String][23]** Type of object to be updated
+-   `id` **[String][23]** Id of the object to be updated
+-   `updates` **[Object][26]** Updates to be applied to the object
+
+Returns **[Promise][24]&lt;[Request][25]>** Resolves to an axios request object
+
+## authorize
+
+Authorization function to set instance and token to be used in salesforce calls
+
+### Parameters
+
+-   `username` **[String][23]** Username of the user to be logged in
+-   `password` **[String][23]** Password of the user to be logged in
+
+
+-   Throws **[Error][27]** If the request fails for any reason
+
+Returns **[Promise][24]** Resolves when the login is successful
 
 ## getUser
 
@@ -19,9 +78,9 @@ Function to retrieve a user record from salesforce
 
 ### Parameters
 
--   `username` **[String][11]** Username for the user to be retrieved
+-   `username` **[String][23]** Username for the user to be retrieved
 
-Returns **[Promise][12]&lt;[Object][13]>** Returns an Object containing all the properties and values for the salesforce user record
+Returns **[Promise][24]&lt;[Object][26]>** Returns an Object containing all the properties and values for the salesforce user record
 
 ## setUser
 
@@ -29,8 +88,8 @@ Updates information on the user record
 
 ### Parameters
 
--   `username` **[String][11]** Username on the record to be updated
--   `props` **[Object][13]** Updates to be applied to the record
+-   `username` **[String][23]** Username on the record to be updated
+-   `updates` **[Object][26]** Updates to be applied to the record
 
 ## getContact
 
@@ -38,9 +97,19 @@ Retrieves a contact record from salesforce
 
 ### Parameters
 
--   `email` **[String][11]** Email found on the contact record
+-   `email` **[String][23]** Email found on the contact record
 
-Returns **[Promise][12]&lt;[Object][13]>** Object containing the record for the contact in salesforce
+Returns **[Promise][24]&lt;[Object][26]>** Object containing the record for the contact in salesforce
+
+## getContacts
+
+Retrieves an array of all contacts matching on an email.
+
+### Parameters
+
+-   `email` **[String][23]** email on the contact records in saleforce to be retrieved
+
+Returns **[Promise][24]&lt;[Array][28]>** Resolves with the contact record
 
 ## setContact
 
@@ -48,8 +117,8 @@ Function to update the contact record
 
 ### Parameters
 
--   `email` **[String][11]** email on the contact record to be updated
--   `props` **[Object][13]** updates to be made to the contact record
+-   `email` **[String][23]** email on the contact record to be updated
+-   `updates` **[Object][26]** updates to be made to the contact record
 
 ## deactivateUser
 
@@ -57,32 +126,72 @@ Function to deactivate a user in salesforce
 
 ### Parameters
 
--   `username` **[String][11]** username of the user to be deactivated
+-   `username` **[String][23]** username of the user to be deactivated
 
-Returns **[Promise][12]** Promise resolves when the user deactivation completes
+Returns **[Promise][24]** Promise resolves when the user deactivation completes
 
-[1]: #getuser
+## deactivatePortalUser
+
+Function to deactivate a portal user in salesforce (salesforce communities)
+
+### Parameters
+
+-   `username` **[String][23]** username of the user to be deactivated
+
+Returns **[Promise][24]** Promise resolves when the user deactivation completes
+
+[1]: #salesforcequery
 
 [2]: #parameters
 
-[3]: #setuser
+[3]: #getsalesforceobject
 
 [4]: #parameters-1
 
-[5]: #getcontact
+[5]: #updatesalesforceobject
 
 [6]: #parameters-2
 
-[7]: #setcontact
+[7]: #authorize
 
 [8]: #parameters-3
 
-[9]: #deactivateuser
+[9]: #getuser
 
 [10]: #parameters-4
 
-[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[11]: #setuser
 
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[12]: #parameters-5
 
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[13]: #getcontact
+
+[14]: #parameters-6
+
+[15]: #getcontacts
+
+[16]: #parameters-7
+
+[17]: #setcontact
+
+[18]: #parameters-8
+
+[19]: #deactivateuser
+
+[20]: #parameters-9
+
+[21]: #deactivateportaluser
+
+[22]: #parameters-10
+
+[23]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+
+[24]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+
+[25]: https://developer.mozilla.org/Add-ons/SDK/High-Level_APIs/request
+
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error
+
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
