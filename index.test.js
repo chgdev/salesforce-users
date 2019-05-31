@@ -4,13 +4,10 @@ jest.mock("axios", () => ({
   patch: jest.fn()
 }));
 const axios = require('axios');
-const SF = require('.');
+const SF = require('.')('stub-client-id', 'stub-client-secret', 'dev');
 
 describe("Main tests", () => {
   beforeAll(() => {
-    SF.environment = 'dev';
-    SF.client_id = 'stub-client-id';
-    SF.client_secret = 'stub-client-secret';
     SF.token = 'stub-token';
   });
   afterEach(() => {
@@ -19,7 +16,6 @@ describe("Main tests", () => {
     axios.patch.mockReset();
   });
   test("Shape tests", () => {
-    expect(SF._instance).toBeString();
     expect(SF.instance).toBeString();
     expect(SF.token).toBeString();
     expect(SF.client_id).toBeString();
@@ -29,15 +25,13 @@ describe("Main tests", () => {
     expect(SF.getUser).toBeFunction();
     expect(SF.setUser).toBeFunction();
     expect(SF.getContact).toBeFunction();
+    expect(SF.getContacts).toBeFunction();
     expect(SF.setContact).toBeFunction();
     expect(SF.deactivateUser).toBeFunction();
-  });
-  describe("instance getter/setter", () => {
-    test("Set and get work Appropriately", () => {
-      SF.instance = 'foobar';
-      expect(SF.instance).toBe('https://foobar.my.salesforce.com');
-      expect(SF.instance).not.toBe('foobar');
-    });
+    expect(SF.deactivatePortalUser).toBeFunction();
+    expect(SF.salesforceQuery).toBeFunction();
+    expect(SF.getSalesforceObject).toBeFunction();
+    expect(SF.updateSalesforceObject).toBeFunction();
   });
   describe("authorize", () => {
     test("rejects when data can't be extracted", () => {
@@ -81,11 +75,11 @@ describe("Main tests", () => {
       await SF.getUser("foobar@foo.bar");
       expect(axios.get.mock.calls.length).toBe(2);
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/sobjects/user/fakeId",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/sobjects/user/fakeId",
         {"headers": {"Authorization": "Bearer Play some pinball!"}}
       );
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/query/",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/query/",
         {"headers": {"Authorization": "Bearer Play some pinball!"}, "params": {"q": "SELECT Id FROM User WHERE Username = 'foobar@foo.bar'"}}
       );
     });
@@ -101,11 +95,11 @@ describe("Main tests", () => {
       }));
       await SF.setUser("foobar@foo.bar", { City: "Compton" });
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/query/",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/query/",
         {"headers": {"Authorization": "Bearer Play some pinball!"}, "params": {"q": "SELECT Id FROM User WHERE Username = 'foobar@foo.bar'"}}
       );
       expect(axios.patch).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/sobjects/user/fakeId",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/sobjects/user/fakeId",
         {"City": "Compton"},
         {"headers": {"Authorization": "Bearer Play some pinball!", "Content-Type": "application/json"}}
       );
@@ -123,13 +117,18 @@ describe("Main tests", () => {
       await SF.getContact("foobar@foo.bar");
       expect(axios.get.mock.calls.length).toBe(2);
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/sobjects/contact/fakeId",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/sobjects/contact/fakeId",
         {"headers": {"Authorization": "Bearer Play some pinball!"}}
       );
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/query/",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/query/",
         {"headers": {"Authorization": "Bearer Play some pinball!"}, "params": {"q": "SELECT Id FROM Contact WHERE Email = 'foobar@foo.bar'"}}
       );
+    });
+  });
+  describe("getContacts", () => {
+    test("Rejects when a request fails to return as expected", () => {
+      expect(SF.getContacts()).toReject();
     });
   });
   describe("setContact", () => {
@@ -147,12 +146,12 @@ describe("Main tests", () => {
       await SF.setContact("foobar@foo.bar", { Email: "foobar@fizz.buz" });
       expect(axios.get.mock.calls.length).toBe(1);
       expect(axios.get).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/query/",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/query/",
         {"headers": {"Authorization": "Bearer Play some pinball!"}, "params": {"q": "SELECT Id FROM Contact WHERE Email = 'foobar@foo.bar'"}}
       );
       expect(axios.patch.mock.calls.length).toBe(1);
       expect(axios.patch).toBeCalledWith(
-        "https://foobar.cs12.my.salesforce.com/services/data/v42.0/sobjects/contact/fakeId",
+        "https://foobar.cs12.my.salesforce.com/services/data/v45.0/sobjects/contact/fakeId",
         {"Email": "foobar@fizz.buz"},
         {"headers": {"Authorization": "Bearer Play some pinball!", "Content-Type": "application/json"}}
       );
@@ -163,6 +162,13 @@ describe("Main tests", () => {
       SF.setUser = jest.fn();
       await SF.deactivateUser("foobar@foo.bar");
       expect(SF.setUser).toBeCalledWith("foobar@foo.bar", {"isActive": false});
+    });
+  });
+  describe("deactivatePortalUser", () => {
+    test("makes a call into setUser", async () => {
+      SF.setUser = jest.fn();
+      await SF.deactivatePortalUser("foobar@foo.bar");
+      expect(SF.setUser).toBeCalledWith("foobar@foo.bar", {"isActive": false, "isPortalEnabled": false });
     });
   });
 });

@@ -7,18 +7,16 @@ This module contains methods used when interacting with salesforce users. There 
 `npm i @chg/salesforce-users`
 
 ```javascript
-const sfUsers = require('@chg/salesforce-users');
-
-sfUsers.environment = 'dev' // makes the call into test.salesforce.com
-sfUsers.client_id = '<your client id>' // client id of the app in salesforce also called 'consumer key'
-sfUsers.client_secret = '<your client secret>' // client secret for the app in salesforce
+const sfUsers = require('@chg/salesforce-users')('client_id', 'client_secret', 'dev');
 
 // make sure the user you use has access to change user and contact records in salesforce
 sf.authorize('admin_user', 'shhh secret password!'); 
 
+// Get/Set user
 const user = await sf.getUser('MrTumnus@yahoo.com');
 await sf.setUser('MrTumnus@yahoo.com', { FavoriteFood: "Turkish Delight" });
 
+// Get/Set contact
 const contact = await sf.getContact('MrTumnus@yahoo.com');
 await sf.setContact('MrTumnus@yahoo.com', { FavoriteFood: "Turkish Delight" });
 
