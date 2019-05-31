@@ -8,13 +8,15 @@
     "test:watch": "jest --watch",
     "docs": "documentation build index.js -f md -o DOCUMENTATION.md"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "salesforce",
+    "users",
+    "chg"
+  ],
+  "author": "Jayden Rasmussen <jayden.rasmussen@chghealthcare.com>",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
-    "form-data": "^2.3.3",
-    "lodash": "^4.17.11"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "documentation": "^11.0.0",
@@ -24,5 +26,17 @@
     "jest-chain": "^1.1.2",
     "jest-extended": "^0.11.1",
     "lint-staged": "^8.1.7"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }

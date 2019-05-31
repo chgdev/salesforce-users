@@ -1,14 +1,14 @@
-const axios = require('axios');
+const axios = require("axios");
 // helper function for form encoding a request
-const FormEncoder = obj => Object.keys(obj).reduce(
-  (acc, curr) => acc === '' ?
+const FormEncoder = (obj) => Object.keys(obj).reduce(
+  (acc, curr) => acc === "" ?
     `${curr}=${encodeURIComponent(obj[curr])}`
     : `${acc}&${curr}=${obj[curr]}`,
-    ''
-  );
+  ""
+);
 module.exports = (client_id, client_secret, environment) => ({
-  instance: '',
-  token: '',
+  instance: "",
+  token: "",
   client_id,
   client_secret,
   environment,
@@ -35,13 +35,13 @@ module.exports = (client_id, client_secret, environment) => ({
    */
   getSalesforceObject(type, id) {
     return axios.get(
-          `${this.instance}/services/data/v45.0/sobjects/${type}/${id}`,
-          {
-            headers: {
-              "Authorization": `Bearer ${this.token}`
-            }
-          }
-        );
+      `${this.instance}/services/data/v45.0/sobjects/${type}/${id}`,
+      {
+        headers: {
+          "Authorization": `Bearer ${this.token}`
+        }
+      }
+    );
   },
   /**
    * Performs an update on a salesforce object
@@ -76,17 +76,17 @@ module.exports = (client_id, client_secret, environment) => ({
         body
       );
       return { access_token, instance_url };
-    }
+    };
     const body = FormEncoder({
       client_id: this.client_id,
       client_secret: this.client_secret,
-      grant_type: 'password',
+      grant_type: "password",
       username,
       password
     });
-    if (this.environment !== 'prod') {
+    if (this.environment !== "prod") {
       const { access_token, instance_url } = await getToken(
-        'https://test.salesforce.com/services/oauth2/token',
+        "https://test.salesforce.com/services/oauth2/token",
         body
       );
       this.token = access_token;
@@ -94,11 +94,11 @@ module.exports = (client_id, client_secret, environment) => ({
       return;
     }
     const { access_token, instance_url } = await getToken(
-        'https://login.salesforce.com/services/oauth2/token',
-        body
-      );
-      this.token = access_token;
-      this.instance = instance_url;
+      "https://login.salesforce.com/services/oauth2/token",
+      body
+    );
+    this.token = access_token;
+    this.instance = instance_url;
   },
   /**
    * Function to retrieve a user record from salesforce
@@ -107,7 +107,7 @@ module.exports = (client_id, client_secret, environment) => ({
    */
   async getUser(username) {
     const { data: { records: [{ Id }] } } = await this.salesforceQuery(`SELECT Id FROM User WHERE Username = '${username}'`);
-    return await this.getSalesforceObject('user', Id);
+    return await this.getSalesforceObject("user", Id);
   },
   /**
    * Updates information on the user record
@@ -116,7 +116,7 @@ module.exports = (client_id, client_secret, environment) => ({
    */
   async setUser(username, updates) {
     const { data: {records: [{ Id }]} } = await this.salesforceQuery(`SELECT Id FROM User WHERE Username = '${username}'`);
-    await this.updateSalesforceObject('user', Id, updates);
+    await this.updateSalesforceObject("user", Id, updates);
   },
   /**
    * Retrieves a contact record from salesforce
@@ -125,7 +125,7 @@ module.exports = (client_id, client_secret, environment) => ({
    */
   async getContact(email) {
     const { data: { records: [{ Id }] } } = await this.salesforceQuery(`SELECT Id FROM Contact WHERE Email = '${email}'`);
-    const { data } = await this.getSalesforceObject('contact', Id);
+    const { data } = await this.getSalesforceObject("contact", Id);
     return data;
   },
   /**
@@ -140,7 +140,7 @@ module.exports = (client_id, client_secret, environment) => ({
     return await Promise.all(
       records
         .map(idReducer)
-        .map(id => this.getSalesforceObject('contact', id).then(dataReducer))
+        .map((id) => this.getSalesforceObject("contact", id).then(dataReducer))
     );
   },
   /**
@@ -149,8 +149,8 @@ module.exports = (client_id, client_secret, environment) => ({
    * @param {Object} updates updates to be made to the contact record
    */
   async setContact(email, updates) {
-    const { data: { records: [{ Id }] } } = await this.salesforceQuery(`SELECT Id FROM Contact WHERE Email = '${email}'`)
-    await this.updateSalesforceObject('contact', Id, updates);
+    const { data: { records: [{ Id }] } } = await this.salesforceQuery(`SELECT Id FROM Contact WHERE Email = '${email}'`);
+    await this.updateSalesforceObject("contact", Id, updates);
   },
   /**
    * Function to deactivate a user in salesforce
@@ -161,11 +161,11 @@ module.exports = (client_id, client_secret, environment) => ({
     await this.setUser(username, { isActive: false });
   },
   /**
-   * Function to deactivate a portal user in salesforce
+   * Function to deactivate a portal user in salesforce (salesforce communities)
    * @param  {String} username username of the user to be deactivated
    * @return {Promise} Promise resolves when the user deactivation completes
    */
   async deactivatePortalUser(username) {
     await this.setUser(username, { isActive: false, isPortalEnabled: false });
   }
-})
+});
