@@ -1,6 +1,6 @@
 {
-  "name": "salesforce-users",
-  "version": "1.0.0",
+  "name": "@chg/salesforce-users",
+  "version": "1.0.1",
   "description": "Utility module for interacting with salesforce users",
   "main": "index.js",
   "scripts": {
@@ -15,8 +15,15 @@
     "users",
     "chg"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/chgdev/salesforce-users.git"
+  },
   "author": "Jayden Rasmussen <jayden.rasmussen@chghealthcare.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0"
   },
