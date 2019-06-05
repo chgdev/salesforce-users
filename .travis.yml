@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+- '8.15'
+script:
+- npm ci
+stages:
+- name: test
+- name: deploy
+  if: branch = master
+jobs:
+  include:
+  - stage: test
+    script: npm run test:ci
+deploy:
+  provider: npm
+  email: chgpdeteam+npm@gmail.com
+  api_key:
+    secure: NxIK2ZNSmbDJVBhSdFmH+SKHimjePVtGjYrcZcrWdBw/ujVlUWWbVAq9gs8EoeR/0Gv9h1lVWRYJBEQ6VQOe4VTkqmrgowKgR4hYsYUrLzFySwFWptwaZ8JGgU4nIo6kv0wTNrciMRJ/tJmPAZ4DmPH4xlUl8m3rsjJkmiXYt1Jclw3W0NfIGd1nMXjlJRRIqacVWlRXsEG2f7v9z7wu0X5s67gtYjemZ4eEHng8SPhQoaAxoW+H6IP2dngp0r8UFDSKEqWy8jN3I3zx8C75POTGn3zNw6wntHo0eFA7fAAoOb0c8GDyzcClqgYdt+FpjlFy7pYKg3f3rsk+LQ1GO5ytlnxXkEwGVcWpjsGrD+lG6juxfgnEbEMeA+i/Jw8pnlBZit4syDZqVVLjgDTDjvRZbtScaJw3v0Pjz5vnrieaEtF4sLOxi4JFYGFWsKJtrgIyi6RxDN9/yEOiSJfmi4IMjXhaXUv5eZ0cLENUxXgIvaScXsBIsEqUGHIxeRqj1twP3JopfJI4iAjfQQtOdk86dqpOywXp7KvFov5tHiUlgLBkZY6EOD7oqXcLef1QYjzw1J2nfnpJKpVKmRBsbmdus7CLx+1vNKB/au9huRvWHu7+QOPvPAqLPOG7ssxx+JI4MoSqjgsCcXxx19V4G/owZBMiHzRGsp5U685/om0=
+  on:
+    repo: chgdev/pde-base-controller
+    branch: master
