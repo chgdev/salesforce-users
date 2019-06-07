@@ -24,6 +24,8 @@ describe("Main tests", () => {
     expect(SF.authorize).toBeFunction();
     expect(SF.getUser).toBeFunction();
     expect(SF.setUser).toBeFunction();
+    expect(SF.createUser).toBeFunction();
+    expect(SF.createContact).toBeFunction();
     expect(SF.getContact).toBeFunction();
     expect(SF.getContacts).toBeFunction();
     expect(SF.setContact).toBeFunction();
@@ -32,6 +34,7 @@ describe("Main tests", () => {
     expect(SF.salesforceQuery).toBeFunction();
     expect(SF.getSalesforceObject).toBeFunction();
     expect(SF.updateSalesforceObject).toBeFunction();
+    expect(SF.createSalesforceObject).toBeFunction();
   });
   describe("authorize", () => {
     test("rejects when data can't be extracted", () => {
@@ -61,6 +64,21 @@ describe("Main tests", () => {
         "https://login.salesforce.com/services/oauth2/token",
         "client_id=stub-client-id&client_secret=stub-client-secret&grant_type=password&username=fake&password=user"
       );
+    });
+  });
+  describe("createUser", () => {
+    test("makes a call into createSalesforceObject", async () => {
+      SF.createSalesforceObject = jest.fn();
+      await SF.createUser({});
+      expect(SF.createSalesforceObject).toBeCalledWith("user",{});
+      SF.createSalesforceObject.mockReset();
+    });
+  });
+  describe("createContact", () => {
+    test("makes a call into createSalesforceObject", async () => {
+      SF.createSalesforceObject = jest.fn();
+      await SF.createContact({});
+      expect(SF.createSalesforceObject).toBeCalledWith("contact",{});
     });
   });
   describe("getUser", () => {
@@ -171,4 +189,5 @@ describe("Main tests", () => {
       expect(SF.setUser).toBeCalledWith("foobar@foo.bar", {"isActive": false, "isPortalEnabled": false });
     });
   });
+
 });

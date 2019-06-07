@@ -62,6 +62,18 @@ module.exports = (client_id, client_secret, environment) => ({
       }
     );
   },
+  createSalesforceObject(type, object) {
+    return axios.post(
+      `${this.instance}/services/data/v45.0/sobjects/${type}`,
+      object,
+      {
+        headers: {
+          "Authorization": `Bearer ${this.token}`,
+          "Content-Type": "application/json"
+        },
+      }
+    );
+  },
   /**
    * Authorization function to set instance and token to be used in salesforce calls
    * @param  {String} username Username of the user to be logged in
@@ -119,6 +131,14 @@ module.exports = (client_id, client_secret, environment) => ({
     await this.updateSalesforceObject("user", Id, updates);
   },
   /**
+   * Function to easily create user records in salesforce
+   * @param  {Object} user     user record values to be created
+   * @return {Promise}         Resolves when the contact is created
+   */
+  async createUser(user) {
+    return await this.createSalesforceObject("user", user);
+  },
+  /**
    * Retrieves a contact record from salesforce
    * @param  {String} email Email found on the contact record
    * @return {Promise<Object>} Object containing the record for the contact in salesforce
@@ -151,6 +171,14 @@ module.exports = (client_id, client_secret, environment) => ({
   async setContact(email, updates) {
     const { data: { records: [{ Id }] } } = await this.salesforceQuery(`SELECT Id FROM Contact WHERE Email = '${email}'`);
     await this.updateSalesforceObject("contact", Id, updates);
+  },
+  /**
+   * Function to easily create contact records in salesforce
+   * @param  {Object} contact  contact record values to be created
+   * @return {Promise}         Resolves when the contact is created
+   */
+  async createContact(contact) {
+    return await this.createSalesforceObject("contact", contact);
   },
   /**
    * Function to deactivate a user in salesforce
