@@ -1,6 +1,6 @@
 {
   "name": "@chg/salesforce-users",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Utility module for interacting with salesforce users",
   "main": "index.js",
   "scripts": {
