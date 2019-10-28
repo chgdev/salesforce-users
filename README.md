@@ -1,4 +1,6 @@
 # Salesforce-Users
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchgdev%2Fsalesforce-users.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchgdev%2Fsalesforce-users?ref=badge_shield)
+
 
 This module contains methods used when interacting with salesforce users. There are a number of methods that can be used to retrieve details about a user and a utility method for setting properties of those users.
 
@@ -24,3 +26,7 @@ await sf.setContact('MrTumnus@yahoo.com', { FavoriteFood: "Turkish Delight" });
 await sf.deactivateUser("MrTumnus@yahoo.com");
 ```
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fchgdev%2Fsalesforce-users.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fchgdev%2Fsalesforce-users?ref=badge_large)
